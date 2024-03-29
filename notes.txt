@@ -1,0 +1,61 @@
+PVP Tracker Project
+
+A dashboard for tracking performance in PVP matches in FFXIV
+
+Data:
+
+DB Tables:
+
+Match
+- id: integer
+- type: string
+- map: string
+- job: string
+- result: integer
+- kills: integer
+- deaths: integer
+- assists: integer
+
+
++ Match
+  - Type: string (Frontlines / Crystaline Conflict / Rival Wings)
+  - Map: string
+  - Job: string
+  - Performance: IMatchPerformace
+  - Result: number
+
+IMatchPerformance {
+  kills: number;
+  deaths: number;
+  assists: number;
+}
+
+
+Maps:
+(Rival Wings)
+Astragalos  *(disabled)
+Hidden Gorge 
+
+(CC)
+The Palaistra
+The Volcanic Heart
+Cloud Nine
+The Clockwork Castletown
+The Red Sands
+
+(Frontlines)
+
+
+
+AddNewMatch fields:
+
+Radio Box: Type
+Select: Map
+Select: Job
+Group: Performance
+  Text Input: Kills
+  Text Input: Deaths
+  Text Input: Assists
+Select: Result
+
+
