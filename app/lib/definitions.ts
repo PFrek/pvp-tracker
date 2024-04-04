@@ -1,7 +1,8 @@
+export type MatchType = "Frontline" | "CC" | "Rival Wings" | undefined;
 
 export interface IMatch {
   id: number;
-  type: string;
+  type: MatchType;
   map: string;
   job: string;
   result: number;
@@ -10,4 +11,5 @@ export interface IMatch {
     deaths: number;
     assists: number;
   }
+  date: string;
 }

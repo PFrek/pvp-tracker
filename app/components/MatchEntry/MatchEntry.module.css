@@ -1,0 +1,39 @@
+.container {
+  margin: 2px;
+  border-radius: 5px;
+  padding: 10px;
+  background-color: var(--primary);
+}
+
+.victory {
+  color: var(--matchVictory);
+}
+
+.defeat {
+  color: var(--matchDefeat);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.playerInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.performance {
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.label {
+  font-size: 0.8rem;
+  font-weight: normal;
+}
+
+.info {
+  font-size: 1.25rem;
+  font-weight: bold;
+}

@@ -2,20 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
-/* :root {
-} */
-
-/* @media (prefers-color-scheme: dark) {
-  :root {
-  }
-} */
+:root {
+  --matchDefeat: #7c2100;
+  --matchVictory: #006912;
+  --colorText: black;
+  --primary: #0088F0;
+  --secondary: #003CF0;
+  --accent: #F06800;
+}
 
 body {
   padding: 1rem;
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+  background-color: black;
+  color: var(--colorText);
 }

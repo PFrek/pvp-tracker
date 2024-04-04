@@ -1,29 +1,35 @@
-import React from 'react'
-import matches from '@/app/tracker/matches.json';
-import Match from '../components/Match';
-import MatchesList from '../components/MatchesList';
-import PageTitle from '../components/PageTitle';
+"use client";
 
-const Tracker = async () => {
-  console.log(matches);
+import React, { useState } from 'react'
+import matches from '@/app/tracker/matches.json';
+import MatchList from '../components/MatchList/MatchList';
+import PageTitle from '../components/PageTitle';
+import styles from './tracker.module.css';
+import StatsSection from '../components/StatsSection/StatsSection';
+import { IMatch } from '../lib/definitions';
+import FilterBar from '../components/FilterBar/FilterBar';
+import MatchInput from '../components/MatchInput/MatchInput';
+
+const Tracker = () => {
+  const [filteredMatches, setFilteredMatches] = useState<IMatch[]>(matches);
+  console.log(filteredMatches);
+
+
 
   return (
     <>
-      <header>
+      <header className={styles.header}>
         <PageTitle title="PVP Tracker" />
       </header>
-      <div className="divider"></div>
-      <section id="matchInputSection" className="m-5">
-        <h2 className="text-center">Match input section</h2>
+      <section className={styles.matchInputSection}>
+        <MatchInput /> 
       </section>
-      <section id="contentSection" className="flex flex-wrap content-center justify-center sm:justify-start">
-        <div className="w-[320px]">
-          <MatchesList matches={matches} />
+      <section className={styles.contentSection}>
+        <div className={styles.matchListSection}>
+          <FilterBar matches={matches} filteredMatches={filteredMatches} setFilteredMatches={setFilteredMatches} />
+          <MatchList matches={filteredMatches} />
         </div>
-        <div className="divider"></div>
-        <div className="m-5">
-          <h2 className="text-center">Statistics Section</h2>
-        </div>
+        <StatsSection matches={filteredMatches} />
       </section>
     </>
   )

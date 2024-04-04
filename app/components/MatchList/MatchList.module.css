@@ -1,0 +1,14 @@
+.container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  overflow-y: scroll;
+}
+
+@media (max-width: 768px) {
+  .container {
+    max-height: 50vh;
+    overflow-y: scroll;
+  }
+}

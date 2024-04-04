@@ -1,0 +1,21 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  width: 180px;
+  height: 180px;
+  background-color: var(--primary);
+  border-radius: 20px;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.value {
+  font-size: 3rem;
+  color: var(--colorText);
+}
