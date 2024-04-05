@@ -1,20 +1,12 @@
-"use client";
-
 import React, { useState } from 'react'
-import matches from '@/app/tracker/matches.json';
 import MatchList from '../components/MatchList/MatchList';
 import PageTitle from '../components/PageTitle';
 import styles from './tracker.module.css';
 import StatsSection from '../components/StatsSection/StatsSection';
-import { IMatch } from '../lib/definitions';
 import FilterBar from '../components/FilterBar/FilterBar';
 import MatchInput from '../components/MatchInput/MatchInput';
 
-const Tracker = () => {
-  const [filteredMatches, setFilteredMatches] = useState<IMatch[]>(matches);
-  console.log(filteredMatches);
-
-
+const Tracker = async () => {
 
   return (
     <>
@@ -26,10 +18,10 @@ const Tracker = () => {
       </section>
       <section className={styles.contentSection}>
         <div className={styles.matchListSection}>
-          <FilterBar matches={matches} filteredMatches={filteredMatches} setFilteredMatches={setFilteredMatches} />
-          <MatchList matches={filteredMatches} />
+          {/* <FilterBar matches={matches} filteredMatches={filteredMatches} setFilteredMatches={setFilteredMatches} /> */}
+          <MatchList />
         </div>
-        <StatsSection matches={filteredMatches} />
+        <StatsSection />
       </section>
     </>
   )

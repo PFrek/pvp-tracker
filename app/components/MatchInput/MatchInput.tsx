@@ -1,44 +1,22 @@
 "use client";
 import { ChangeEvent, useState } from 'react';
 import styles from './MatchInput.module.css';
-import { addMatch } from '@/app/lib/actions';
+import { createMatch } from '@/app/lib/actions';
+import { getMapsByType, jobs, MatchType, matchTypes } from '@/app/lib/definitions';
 
 const MatchInput = () => {
-  const [type, setType] = useState("Frontline");
+  const [type, setType] = useState<MatchType>("Frontline");
 
   const handleTypeChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    setType(event.currentTarget.value);
+    setType(event.currentTarget.value as MatchType);
   }
 
-  const matchTypes = ["Frontline", "CC", "Rival Wings"];
-
-  const matchMaps = type === 'Frontline' ? [
-    // "The Borderland Ruins",
-    "Seal Rock",
-    "The Fields of Glory",
-    "Onsal Hakair"
-  ] : type === 'CC' ? [
-    "The Palaistra",
-    "The Volcanic Heart",
-    "Cloud Nine",
-    "The Clockwork Castletown",
-    "The Red Sands",
-  ] : type === 'Rival Wings' ? [
-    // "Astragalos",
-    "Hidden Gorge",
-  ] : []
-
-  const jobs = [
-    "PLD", "WAR", "DRK", "GNB",
-    "WHM", "SCH", "AST", "SGE",
-    "MNK", "DRG", "NIN", "SAM", "RPR",
-    "BRD", "MCH", "DNC",
-    "BLM", "SMN", "RDM",
-  ]
+  const jobsSelector = [];
+  
 
   return (
     <div className={styles.container}>
-      <form action={addMatch}>
+      <form action={createMatch}>
         <select name="type" onChange={handleTypeChange}>
           {matchTypes.map((type) =>
             <option key={type[0]} value={type}>{type}</option>
@@ -46,7 +24,7 @@ const MatchInput = () => {
         </select>
         <select name="map">
           {
-            matchMaps.map((map) => {
+            getMapsByType(type).map((map) => {
               return (
                 <option key={map} value={map}>{map}</option>
               );

@@ -1,7 +1,6 @@
 import React from 'react'
 import { IMatch } from '../../lib/definitions'
 import clsx from 'clsx'
-import Image from 'next/image'
 import styles from './MatchEntry.module.css'
 
 const Match = ({ match }: { match: IMatch }) => {
@@ -44,7 +43,7 @@ const Match = ({ match }: { match: IMatch }) => {
         </div>
         <div className={styles.performance}>
             <span className={styles.label}>K/D/A</span>
-            <h3 className={styles.info}>{match.performance.kills} / {match.performance.deaths} / {match.performance.assists}</h3>
+            <h3 className={styles.info}>{match.kills} / {match.deaths} / {match.assists}</h3>
         </div>
         {/* <Image src={resultIcon} alt={resultAltText} width="32" height="32" /> */}
       </div>

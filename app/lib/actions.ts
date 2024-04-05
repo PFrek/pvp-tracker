@@ -1,48 +1,54 @@
 "use server";
+import { revalidatePath } from "next/cache";
 import { IMatch, MatchType } from "./definitions";
-import fs from 'fs';
 
-export async function addMatch(formData: FormData) {
-  const {
-    type,
-    map,
-    job,
-    result,
-    kills,
-    deaths,
-    assists
-  } = Object.fromEntries(formData);
+export async function getMatches() {
+  try {
+    const res = await fetch('http://localhost:3001/matches', { cache: "no-store" });
 
-  const match: IMatch = {
-    id: 1,
-    type: type as MatchType,
-    map: map as string,
-    job: job as string,
-    result: (result as unknown) as number,
-    performance: {
-      kills: (kills as unknown) as number,
-      deaths: (deaths as unknown) as number,
-      assists: (assists as unknown) as number
-    },
-    date: new Date().toISOString()
+    const matches: IMatch[] = await res.json();
+
+    return matches;
+  } catch (error) {
+    console.error('Failed to fetch matches data.');
+    return [];
   }
-
-  await appendToMatches(match);
 }
 
-async function appendToMatches(match: IMatch) {
-  const filePath = 'app/tracker/matches.json';
+export async function createMatch(formData: FormData) {
+  const match: IMatch = {
+    type: formData.get('type') as MatchType,
+    map: formData.get('map') as string,
+    job: formData.get('job') as string,
+    result: parseInt(formData.get('result') as string),
+    kills: parseInt(formData.get('kills') as string),
+    deaths: parseInt(formData.get('deaths') as string),
+    assists: parseInt(formData.get('assists') as string),
+    date: new Date().toISOString(),
+  };
 
   try {
-    const data = await fs.promises.readFile(filePath, 'utf-8');
-    const jsonData = JSON.parse(data);
+    const res = await fetch('http://localhost:3001/matches', {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(match)
+    });
 
-    jsonData.push(match);
+    const data = await res.json();
 
-    await fs.promises.writeFile(filePath, JSON.stringify(jsonData, null, 2));
+    if(!res.ok) {
+      console.error(`Failed to create Match in DB!: ${JSON.stringify(data)}`);
+      return false;
+    }
 
-    console.log('Match added to JSON file successfully.');
+    console.log('Succesfully created match in DB. Match id:', data.id);
+    revalidatePath('/tracker');
+
   } catch (error) {
-    console.error('Error:', error);
+    console.error(error);
+    console.log('Failed to create match!');
   }
-}
+
+};

@@ -1,12 +1,15 @@
 import React from 'react'
-import { IMatch } from '../../lib/definitions'
 import Match from '../MatchEntry/MatchEntry';
 import styles from './MatchList.module.css';
+import { getMatches } from '@/app/lib/actions';
 
-const MatchList = ({ matches }: { matches: IMatch[] }) => {
+const MatchList = async () => {
+
+  const matches = await getMatches();
+
   return (
     <div className={styles.container}>
-      {matches.length > 0 ? (
+      {matches && matches.length > 0 ? (
         matches.map((match) => {
           return (
             <Match key={match.id} match={match} />

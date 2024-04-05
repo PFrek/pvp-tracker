@@ -1,11 +1,13 @@
 import { IMatch } from '@/app/lib/definitions';
 import StatCard from './StatCard/StatCard';
 import styles from './StatsSection.module.css';
+import { getMatches } from '@/app/lib/actions';
 
-const StatsSection = ({ matches }: { matches: IMatch[] }) => {
+const StatsSection = async () => {
+
+  const matches = await getMatches();
 
   const calculateWinRate = (matches: IMatch[]): string => {
-
     const wins = matches.reduce(
       (count: number, match: IMatch) => {
         if (match.result === 1) {
@@ -24,9 +26,9 @@ const StatsSection = ({ matches }: { matches: IMatch[] }) => {
   }
 
   const kdas = matches.map((match: IMatch) => {
-    const kills = match.performance.kills;
-    const deaths = match.performance.deaths || 1; // Account 0 death games as 1 death for KDA calculation
-    const assists = match.performance.assists;
+    const kills = match.kills;
+    const deaths = match.deaths || 1; // Account 0 death games as 1 death for KDA calculation
+    const assists = match.assists;
     return (kills + assists) / deaths;
   });
 
@@ -64,7 +66,7 @@ const StatsSection = ({ matches }: { matches: IMatch[] }) => {
   return (
     <div className={styles.container}>
       {
-        matches.length > 0 ? (
+        matches && matches.length > 0 ? (
           <>
             <StatCard title="Win Rate" value={`${calculateWinRate(matches)}%`} />
             <StatCard title="Avg KDA" value={`${calculateKDAStat(kdas, 'avg')}`} />
