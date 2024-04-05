@@ -1,8 +1,11 @@
 .container {
   margin: 2px;
-  border-radius: 5px;
+  border-radius: 10px;
   padding: 10px;
   background-color: var(--primary);
+  border: 3px solid var(--secondaryDark);
+  display: flex;
+  flex-direction: column;
 }
 
 .victory {
@@ -13,18 +16,14 @@
   color: var(--matchDefeat);
 }
 
-.header {
+.matchInfo {
   display: flex;
   justify-content: space-between;
+  gap: 20px;
 }
 
-.playerInfo {
+.infoSlot {
   display: flex;
-  flex-direction: column;
-}
-
-.performance {
-  display: inline-flex;
   flex-direction: column;
 }
 
@@ -38,19 +37,16 @@
   font-weight: bold;
 }
 
-.matchInfo {
-  display: flex;
-  justify-content: space-between;
-}
 
-.matchInfo button {
-  background-color: var(--secondary);
-  color: red;
-  border: 1px solid red;
+.deleteButton {
+  background-color: var(--primary);
+  color: var(--matchDefeat);
+  border: 1px solid var(--matchDefeat);
   border-radius: 20px;
   padding: 1px 5px;
 }
 
-.matchInfo button:hover {
-  background-color: var(--primary);
+.deleteButton:hover {
+  background-color: var(--secondary);
+  color: red;
 }

@@ -14,13 +14,10 @@ const Tracker = async () => {
         <PageTitle title="PVP Tracker" />
       </header>
       <section className={styles.matchInputSection}>
-        <MatchInput /> 
+        <MatchInput />
       </section>
       <section className={styles.contentSection}>
-        <div className={styles.matchListSection}>
-          {/* <FilterBar matches={matches} filteredMatches={filteredMatches} setFilteredMatches={setFilteredMatches} /> */}
-          <MatchList />
-        </div>
+        <MatchList />
         <StatsSection />
       </section>
     </>

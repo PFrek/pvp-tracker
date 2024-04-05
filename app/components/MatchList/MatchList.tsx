@@ -9,6 +9,7 @@ const MatchList = async () => {
 
   return (
     <div className={styles.container}>
+      {/* <FilterBar matches={matches} filteredMatches={filteredMatches} setFilteredMatches={setFilteredMatches} /> */}
       {matches && matches.length > 0 ? (
         matches.map((match) => {
           return (

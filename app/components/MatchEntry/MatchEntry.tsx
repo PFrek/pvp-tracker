@@ -43,20 +43,22 @@ const Match = ({ match }: { match: IMatch }) => {
         match.result === 1 ? styles.victory : styles.defeat
       )
     }>
-      <div className={styles.header}>
-        <div className={styles.playerInfo}>
-          <p className={styles.label}>Job</p>
-          <h3 className={styles.info}>{match.job}</h3> 
-        </div>
-        <div className={styles.performance}>
-            <span className={styles.label}>K/D/A</span>
-            <h3 className={styles.info}>{match.kills} / {match.deaths} / {match.assists}</h3>
-        </div>
-        {/* <Image src={resultIcon} alt={resultAltText} width="32" height="32" /> */}
-      </div>
       <div className={styles.matchInfo}>
-        <p>{match.type} ({match.map})</p>
-        <button onClick={handleDeleteButton}>DEL</button>
+        <div className={styles.infoSlot}>
+          <p className={styles.label}>Job</p>
+          <h3 className={styles.info}>{match.job}</h3>
+        </div>
+        <div className={styles.infoSlot}>
+          <span className={styles.label}>K/D/A</span>
+          <h3 className={styles.info}>{match.kills} / {match.deaths} / {match.assists}</h3>
+        </div>
+        <div className={styles.infoSlot}>
+          <span className={styles.label}>Type (Map)</span>
+          <h3 className={styles.info}>{match.type} ({match.map})</h3>
+        </div>
+      </div>
+      <div className={styles.buttons}>
+        <button className={styles.deleteButton} onClick={handleDeleteButton}>DEL</button>
       </div>
     </div>
   )

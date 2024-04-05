@@ -3,26 +3,15 @@
 }
 
 .matchInputSection {
-  margin: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  background-color: var(--primary);
-}
-
-.matchListSection {
-  flex: 1;
-  background-color: var(--secondary);
-  display: flex;
-  flex-direction: column;
-  max-height: calc(100vh - 160px); 
+  margin: 10px 0px;
 }
 
 .contentSection {
   display: flex;
+  height: calc(100vh - 250px);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1028px) {
   .contentSection {
     flex-direction: column;
   }
