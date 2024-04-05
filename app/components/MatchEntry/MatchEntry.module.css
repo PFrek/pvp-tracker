@@ -37,3 +37,20 @@
   font-size: 1.25rem;
   font-weight: bold;
 }
+
+.matchInfo {
+  display: flex;
+  justify-content: space-between;
+}
+
+.matchInfo button {
+  background-color: var(--secondary);
+  color: red;
+  border: 1px solid red;
+  border-radius: 20px;
+  padding: 1px 5px;
+}
+
+.matchInfo button:hover {
+  background-color: var(--primary);
+}

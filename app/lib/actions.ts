@@ -38,7 +38,7 @@ export async function createMatch(formData: FormData) {
 
     const data = await res.json();
 
-    if(!res.ok) {
+    if (!res.ok) {
       console.error(`Failed to create Match in DB!: ${JSON.stringify(data)}`);
       return false;
     }
@@ -50,5 +50,27 @@ export async function createMatch(formData: FormData) {
     console.error(error);
     console.log('Failed to create match!');
   }
-
 };
+
+export async function deleteMatch(matchId: number) {
+  try {
+    const res = await fetch(`http://localhost:3001/matches/${matchId}`, {
+      method: 'DELETE',
+    })
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      console.error(`Failed to delete Match in DB!: ${JSON.stringify(data)}`);
+      return false;
+    }
+
+    console.log(JSON.stringify(data.msg));
+    revalidatePath('/tracker');
+
+  } catch (error) {
+    console.error(error);
+    console.log('Failed to delete match!');
+  }
+}
+

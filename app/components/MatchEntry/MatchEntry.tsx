@@ -1,7 +1,9 @@
+"use client";
 import React from 'react'
 import { IMatch } from '../../lib/definitions'
 import clsx from 'clsx'
 import styles from './MatchEntry.module.css'
+import { deleteMatch } from '@/app/lib/actions';
 
 const Match = ({ match }: { match: IMatch }) => {
   let resultIcon: string;
@@ -29,6 +31,11 @@ const Match = ({ match }: { match: IMatch }) => {
       break;
   }
 
+  const handleDeleteButton = () => {
+    const id = match.id!;
+    deleteMatch(id);
+  };
+
   return (
     <div className={
       clsx(
@@ -49,6 +56,7 @@ const Match = ({ match }: { match: IMatch }) => {
       </div>
       <div className={styles.matchInfo}>
         <p>{match.type} ({match.map})</p>
+        <button onClick={handleDeleteButton}>DEL</button>
       </div>
     </div>
   )
