@@ -1,10 +1,26 @@
 "use server";
 import { revalidatePath } from "next/cache";
 import { IMatch, MatchType } from "./definitions";
+import { ReadonlyURLSearchParams } from "next/navigation";
 
-export async function getMatches() {
+// function queryToString(query: ): string {
+//   let queryString = '?';
+//   Object.entries(query).forEach((pair) => {
+//     queryString += `${pair[0]}=${pair[1]}&`;
+//   });
+
+//   return queryString.slice(0, -1);
+// }
+
+export async function getMatches(query: ReadonlyURLSearchParams) {
+  const url = new URL('http://localhost:3001/matches');
+
+  if (query) {
+    url.search = new URLSearchParams(query).toString();
+  }
+
   try {
-    const res = await fetch('http://localhost:3001/matches', { cache: "no-store" });
+    const res = await fetch(url, { cache: "no-store" });
 
     const matches: IMatch[] = await res.json();
 
@@ -13,6 +29,7 @@ export async function getMatches() {
     console.error('Failed to fetch matches data.');
     return [];
   }
+  return [];
 }
 
 export async function createMatch(formData: FormData) {

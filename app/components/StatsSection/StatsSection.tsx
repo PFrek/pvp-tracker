@@ -1,11 +1,24 @@
+'use client';
 import { IMatch } from '@/app/lib/definitions';
 import StatCard from './StatCard/StatCard';
 import styles from './StatsSection.module.css';
 import { getMatches } from '@/app/lib/actions';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
-const StatsSection = async () => {
+const StatsSection = () => {
+  const searchParams = useSearchParams();
+  const [matches, setMatches] = useState<IMatch[]>([]);
 
-  const matches = await getMatches();
+  useEffect(() => {
+    const fetchMatches = async () => {
+      const matches = await getMatches(searchParams);
+      setMatches(matches);
+    }
+
+    fetchMatches();
+  });
+
 
   const calculateWinRate = (matches: IMatch[]): string => {
     const wins = matches.reduce(
@@ -25,14 +38,15 @@ const StatsSection = async () => {
     return formattedWinRate;
   }
 
-  const kdas = matches.map((match: IMatch) => {
-    const kills = match.kills;
-    const deaths = match.deaths || 1; // Account 0 death games as 1 death for KDA calculation
-    const assists = match.assists;
-    return (kills + assists) / deaths;
-  });
 
-  const calculateKDAStat = (kdas: number[], stat: string): string => {
+  const calculateKDAStat = (stat: string): string => {
+    const kdas = matches.map((match: IMatch) => {
+      const kills = match.kills;
+      const deaths = match.deaths || 1; // Account 0 death games as 1 death for KDA calculation
+      const assists = match.assists;
+      return (kills + assists) / deaths;
+    });
+
     let calculatedStat: string;
 
     switch (stat) {
@@ -69,9 +83,9 @@ const StatsSection = async () => {
         matches && matches.length > 0 ? (
           <>
             <StatCard title="Win Rate" value={`${calculateWinRate(matches)}%`} />
-            <StatCard title="Avg KDA" value={`${calculateKDAStat(kdas, 'avg')}`} />
-            <StatCard title="Best KDA" value={`${calculateKDAStat(kdas, 'best')}`} />
-            <StatCard title="Worst KDA" value={`${calculateKDAStat(kdas, 'worst')}`} />
+            <StatCard title="Avg KDA" value={`${calculateKDAStat('avg')}`} />
+            <StatCard title="Best KDA" value={`${calculateKDAStat('best')}`} />
+            <StatCard title="Worst KDA" value={`${calculateKDAStat('worst')}`} />
           </>
         ) : (
           <p>No data found.</p>
