@@ -12,6 +12,15 @@ export interface IMatch {
   date: string;
 }
 
+export interface IFilter {
+  type?: string,
+  map?: string,
+  job?: string,
+  date?: string,
+  startDate?: string,
+  endDate?: string,
+}
+
 export const matchTypes = ["Frontline", "CC", "Rival Wings"];
 
 export const getMapsByType = (type: MatchType) => {

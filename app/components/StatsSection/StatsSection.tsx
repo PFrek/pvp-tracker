@@ -1,24 +1,11 @@
-'use client';
-import { IMatch } from '@/app/lib/definitions';
+import { IFilter, IMatch } from '@/app/lib/definitions';
 import StatCard from './StatCard/StatCard';
 import styles from './StatsSection.module.css';
-import { getMatches } from '@/app/lib/actions';
-import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import APIRepository from '@/app/lib/IMatchRepository';
 
-const StatsSection = () => {
-  const searchParams = useSearchParams();
-  const [matches, setMatches] = useState<IMatch[]>([]);
+const StatsSection = async ({ filter }: { filter: IFilter }) => {
 
-  useEffect(() => {
-    const fetchMatches = async () => {
-      const matches = await getMatches(searchParams);
-      setMatches(matches);
-    }
-
-    fetchMatches();
-  });
-
+  const matches = await APIRepository.getMatches(filter);
 
   const calculateWinRate = (matches: IMatch[]): string => {
     const wins = matches.reduce(

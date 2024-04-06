@@ -1,4 +1,5 @@
 .container {
+  flex: 1;
   background-color: var(--secondary);
   border-radius: 10px;
   display: flex;

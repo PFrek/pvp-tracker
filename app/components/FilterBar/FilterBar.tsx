@@ -1,89 +1,61 @@
-import { IMatch } from '@/app/lib/definitions';
+import { IFilter } from '@/app/lib/definitions';
 import styles from './FilterBar.module.css';
+import { SetStateAction } from 'react';
 
-const FilterBar = ({ matches, filteredMatches, setFilteredMatches }: { matches: IMatch[], filteredMatches: IMatch[], setFilteredMatches: React.Dispatch<React.SetStateAction<IMatch[]>>}) => {
+const getLocaleDate = (date: Date): string => {
+  const year = date.getFullYear();
+  const month = date.getMonth() <= 9 ? '0' : '' + date.getMonth();
+  const day = date.getDate() <= 9 ? '0' : '' + date.getDate();
 
+  return `${year}-${month}-${day}`;
+}
 
-  const getDateString = (date: Date) => {
-    return date.toISOString().split('T')[0];
-  }
+// Maybe shift week start to Tue?
+const getWeekBoundaries = (today: Date) => {
+  const MS_IN_A_DAY = 24 * 60 * 60000;
+  const weekDay = today.getDay();
+  const firstDay = new Date(today.getTime() - (weekDay * MS_IN_A_DAY));
+  const lastDay = new Date(today.getTime() + ((6 - weekDay) * MS_IN_A_DAY));
 
-  const incrementDateByDays = (date: Date, daysToAdd: number): Date => {
-    const newDate = new Date(date.getTime());
-    newDate.setDate(newDate.getDate() + daysToAdd);
-    return newDate;
-  }
+  return { firstDay: getLocaleDate(firstDay), lastDay: getLocaleDate(lastDay) };
+}
 
-  const filterMatchesByDate = (date: Date) => {
-    return matches.filter((match) => {
-      const matchDate = getDateString(new Date(match.date));
-      return matchDate === getDateString(date);
-    });
-  }
-
-  const filterMatchesByWeek = (date: Date) => {
-    return matches.filter((match) => {
-      const previousSunday = new Date(date.getTime());
-      previousSunday.setDate(date.getDate() - date.getDay());
-      previousSunday.setHours(0, 0, 0, 0);
-
-      const nextSunday = incrementDateByDays(previousSunday, 7);
-
-      const matchDate = new Date(match.date);
-      return matchDate.getTime() >= previousSunday.getTime() && matchDate.getTime() < nextSunday.getTime();
-    });
-  };
-
+const FilterBar = ({ filter, setFilter }: { filter: IFilter, setFilter: React.Dispatch<SetStateAction<IFilter>> }) => {
 
   const filterMatches = (key: string, value?: string) => {
     if (key === 'date') {
       switch (value) {
 
         case 'today':
-          setFilteredMatches(filterMatchesByDate(new Date()));
+          const today = new Date();
+          const newFilter = { ...filter, date: getLocaleDate(today) };
+          setFilter(newFilter);
           break;
 
         case 'week':
-          setFilteredMatches(filterMatchesByWeek(new Date()));
+          const { firstDay, lastDay } = getWeekBoundaries(new Date());
+          setFilter({ ...filter, startDate: firstDay, endDate: lastDay });
           break;
 
+        case 'all_time':
         default:
-          setFilteredMatches(matches);
+          setFilter({ ...filter, date: undefined, startDate: undefined, endDate: undefined })
           return;
       }
     }
-    else if(key === 'none') {
-      setFilteredMatches(matches);
+    else if (key === 'job') {
+
     }
   };
-
-  const sortByDate = (order: string = "desc") => {
-    console.log(`Sort: ${order}`)
-    let sorted = filteredMatches;
-    sorted.sort((a, b) => {
-      const aTime = new Date(a.date).getTime();
-      const bTime = new Date(b.date).getTime();
-
-      const result = (aTime - bTime) * (order === 'desc' ? -1 : 1);
-      return result;
-    });
-
-    console.log("Sorted:");
-    sorted.forEach((match) => {
-      console.log(match.date);
-    });
-    setFilteredMatches([...sorted]);
-  }
-
 
   return (
     <div className={styles.filters}>
       <button onClick={() => { filterMatches('date', 'today') }}>Today</button>
       <button onClick={() => { filterMatches('date', 'week') }}>This Week</button>
-      <button onClick={() => { filterMatches('none') }}>All Time</button>
+      <button onClick={() => { filterMatches('date', 'all_time') }}>All Time</button>
       <p>Order by</p>
-      <button onClick={() => { sortByDate('desc') }}>Recent</button>
-      <button onClick={() => { sortByDate('asc') }}>Oldest</button>
+      {/* <button onClick={() => { sortByDate('desc') }}>Recent</button>
+      <button onClick={() => { sortByDate('asc') }}>Oldest</button> */}
     </div>
   )
 }

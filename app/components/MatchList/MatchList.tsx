@@ -1,28 +1,15 @@
-'use client';
-import React, { Suspense, useEffect, useState } from 'react'
+import React from 'react'
 import Match from '../MatchEntry/MatchEntry';
 import styles from './MatchList.module.css';
-import { getMatches } from '@/app/lib/actions';
-import { IMatch } from '@/app/lib/definitions';
-import { useSearchParams } from 'next/navigation';
+import { IFilter } from '@/app/lib/definitions';
+import APIRepository from '@/app/lib/IMatchRepository';
 
-const MatchList = () => {
-  const searchParams = useSearchParams();
-  const [matches, setMatches] = useState<IMatch[]>();
+const MatchList = async ({ filter }: { filter: IFilter }) => {
 
-  useEffect(() => {
-    const fetchMatches = async () => {
-      const matches = await getMatches(searchParams);
-      setMatches(matches);
-    }
-
-    fetchMatches();
-  });
-
+  const matches = await APIRepository.getMatches(filter);
 
   return (
     <div className={styles.container}>
-      {/* <FilterBar matches={matches} filteredMatches={filteredMatches} setFilteredMatches={setFilteredMatches} /> */}
       {matches && matches.length > 0 ? (
         matches.map((match) => {
           return (
