@@ -1,3 +1,4 @@
+'use client';
 import { deleteMatch } from '@/app/lib/actions';
 import styles from './DeleteButton.module.css';
 

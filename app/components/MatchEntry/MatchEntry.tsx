@@ -1,4 +1,3 @@
-"use client";
 import React from 'react'
 import { IMatch } from '../../lib/definitions'
 import clsx from 'clsx'
