@@ -1,12 +1,19 @@
 import React from 'react'
 import Match from '../MatchEntry/MatchEntry';
 import styles from './MatchList.module.css';
-import { IFilter } from '@/app/lib/definitions';
 import APIRepository from '@/app/lib/IMatchRepository';
+import { IFilter } from '@/app/lib/definitions';
 
-const MatchList = async () => {
+const MatchList = async ({ filters }: { filters: IFilter }) => {
+  // const today = new Date();
+  // const year = today.getFullYear();
+  // const month = (today.getMonth() < 10 ? '0' : '') + today.getMonth();
+  // const day = (today.getDate() < 10 ? '0' : '') + today.getDate();
 
-  const matches = await APIRepository.getMatches({});
+  // const todayFilter = `${year}-${month}-${day}`;
+  // console.log(todayFilter);
+
+  const matches = await APIRepository.getMatches(filters);
 
   return (
     <div className={styles.container}>

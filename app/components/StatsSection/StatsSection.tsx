@@ -3,9 +3,9 @@ import StatCard from './StatCard/StatCard';
 import styles from './StatsSection.module.css';
 import APIRepository from '@/app/lib/IMatchRepository';
 
-const StatsSection = async () => {
+const StatsSection = async ({ filters }: { filters: IFilter }) => {
 
-  const matches = await APIRepository.getMatches({});
+  const matches = await APIRepository.getMatches(filters);
 
   const calculateWinRate = (matches: IMatch[]): string => {
     const wins = matches.reduce(

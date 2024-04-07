@@ -21,9 +21,7 @@ function filterToQueryString(filter: IFilter): string {
 class APIRepository implements IMatchRepository {
 
   async getMatches(filter: IFilter): Promise<IMatch[]> {
-    // console.log(filter.toString());
-    // const queryString = filterToQueryString(filter);
-    const queryString = filter ? `?${filter.toString()}` : '';
+    const queryString = filterToQueryString(filter);
 
     const url = new URL(`http://localhost:3001/matches${queryString}`);
 

@@ -1,13 +1,16 @@
-import React, { useState } from 'react'
 import MatchList from '../components/MatchList/MatchList';
 import PageTitle from '../components/PageTitle';
 import styles from './tracker.module.css';
 import StatsSection from '../components/StatsSection/StatsSection';
-import FilterBar from '../components/FilterBar/FilterBar';
 import MatchInput from '../components/MatchInput/MatchInput';
+import { IFilter } from '../lib/definitions';
+import FilterBar from '../components/FilterBar/FilterBar';
 
 
-const Tracker = () => {
+const Tracker = ({ searchParams }: { searchParams: {}}) => {
+
+  const filters: IFilter = searchParams;
+
   return (
     <>
       <header className={styles.header}>
@@ -17,8 +20,9 @@ const Tracker = () => {
         <MatchInput />
       </section>
       <section className={styles.contentSection}>
-        <MatchList />
-        <StatsSection />
+        <FilterBar />
+        <MatchList filters={filters}/>
+        <StatsSection filters={filters}/>
       </section>
     </>
   )

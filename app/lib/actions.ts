@@ -1,6 +1,5 @@
 "use server";
-import { revalidatePath } from "next/cache";
-import { IFilter, IMatch, MatchType } from "./definitions";
+import { IMatch, MatchType } from "./definitions";
 import APIRepository from "./IMatchRepository";
 
 

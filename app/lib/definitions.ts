@@ -12,7 +12,7 @@ export interface IMatch {
   date: string | null;
 }
 
-export interface IFilter {
+export type IFilter = {
   type?: string,
   map?: string,
   job?: string,
