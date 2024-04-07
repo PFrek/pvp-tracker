@@ -21,7 +21,6 @@ export async function createMatch(formData: FormData) {
 };
 
 export async function deleteMatch(matchId: number) {
-  console.log('OK');
   const result = await APIRepository.deleteMatch(matchId);
   return result;
 }

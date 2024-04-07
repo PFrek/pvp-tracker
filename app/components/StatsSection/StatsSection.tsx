@@ -3,9 +3,9 @@ import StatCard from './StatCard/StatCard';
 import styles from './StatsSection.module.css';
 import APIRepository from '@/app/lib/IMatchRepository';
 
-const StatsSection = async ({ filter }: { filter: IFilter }) => {
+const StatsSection = async () => {
 
-  const matches = await APIRepository.getMatches(filter);
+  const matches = await APIRepository.getMatches({});
 
   const calculateWinRate = (matches: IMatch[]): string => {
     const wins = matches.reduce(
@@ -28,9 +28,9 @@ const StatsSection = async ({ filter }: { filter: IFilter }) => {
 
   const calculateKDAStat = (stat: string): string => {
     const kdas = matches.map((match: IMatch) => {
-      const kills = match.kills;
+      const kills = match.kills || 0;
       const deaths = match.deaths || 1; // Account 0 death games as 1 death for KDA calculation
-      const assists = match.assists;
+      const assists = match.assists || 0;
       return (kills + assists) / deaths;
     });
 

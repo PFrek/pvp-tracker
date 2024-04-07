@@ -4,9 +4,9 @@ import styles from './MatchList.module.css';
 import { IFilter } from '@/app/lib/definitions';
 import APIRepository from '@/app/lib/IMatchRepository';
 
-const MatchList = async ({ filter }: { filter: IFilter }) => {
+const MatchList = async () => {
 
-  const matches = await APIRepository.getMatches(filter);
+  const matches = await APIRepository.getMatches({});
 
   return (
     <div className={styles.container}>

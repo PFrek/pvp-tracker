@@ -1,15 +1,15 @@
 export type MatchType = "Frontline" | "CC" | "Rival Wings" | undefined;
 
 export interface IMatch {
-  id?: number;
-  type: MatchType;
-  map: string;
-  job: string;
-  result: number;
-  kills: number;
-  deaths: number;
-  assists: number;
-  date: string;
+  id?: number | null;
+  type: MatchType | null;
+  map: string | null;
+  job: string | null;
+  result: number | null;
+  kills: number | null;
+  deaths: number | null;
+  assists: number | null;
+  date: string | null;
 }
 
 export interface IFilter {
@@ -19,6 +19,7 @@ export interface IFilter {
   date?: string,
   startDate?: string,
   endDate?: string,
+  order?: string,
 }
 
 export const matchTypes = ["Frontline", "CC", "Rival Wings"];

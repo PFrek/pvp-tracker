@@ -37,16 +37,8 @@
   font-weight: bold;
 }
 
-
-.deleteButton {
-  background-color: var(--primary);
-  color: var(--matchDefeat);
-  border: 1px solid var(--matchDefeat);
-  border-radius: 20px;
-  padding: 1px 5px;
-}
-
-.deleteButton:hover {
-  background-color: var(--secondary);
-  color: red;
+.buttons {
+  margin-top: 5px;
+  display: flex;
+  justify-content: flex-end;
 }
