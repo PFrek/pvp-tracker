@@ -1,5 +1,5 @@
 'use client';
-import { IFilter, jobs } from '@/app/lib/definitions';
+import { IFilter, jobs, matchTypes } from '@/app/lib/definitions';
 import styles from './FilterBar.module.css';
 import { ChangeEvent, useCallback } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
@@ -40,8 +40,8 @@ const FilterBar = () => {
 
   const stringToFilter = (str: string): IFilter => {
     const today = new Date();
-    if(today.getUTCHours() < 8) {
-      today.setUTCDate(today.getUTCDate() - 1);   
+    if (today.getUTCHours() < 8) {
+      today.setUTCDate(today.getUTCDate() - 1);
     }
     today.setUTCHours(8, 0, 0);
     const MS_IN_A_DAY = 24 * 60 * 60000;
@@ -52,10 +52,10 @@ const FilterBar = () => {
       const tuesOffset = (today.getDay() + 5) % 7; // Gets the offset in days from the previous tuesday
       const weekStart = new Date(today.getTime() - (tuesOffset * MS_IN_A_DAY));
       console.log(`weekStart: ${weekStart}`);
-      
+
       console.log(`weekStart: ${weekStart}`);
       const weekEnd = new Date(weekStart.getTime() + 6 * MS_IN_A_DAY);
-      
+
       return { date: undefined, startDate: getDateString(weekStart), endDate: getDateString(weekEnd) };
     }
     else {
@@ -63,7 +63,7 @@ const FilterBar = () => {
     }
   }
 
-  const handleFilterChange = (type: string, value: string): void => {
+  const changeFilter = (type: string, value: string): void => {
     let newFilter: IFilter = {};
     if (type === 'date') {
       const dates = stringToFilter(value);
@@ -72,52 +72,61 @@ const FilterBar = () => {
     else if (type === 'order') {
       newFilter.order = value;
     }
-    else if (type === ' job') {
+    else if (type === 'jobs') {
       if (!jobs.includes(value)) {
-        newFilter.job = '';
+        newFilter.job = undefined;
       }
       else {
         newFilter.job = value;
       }
     }
+    else if(type === 'types') {
+      if(!matchTypes.includes(value)) {
+        newFilter.type = undefined;
+      }
+      else {
+        newFilter.type = value;
+      }
+    }
 
-    const queryStr = createQueryString(newFilter);
-
-    router.push(pathname + '?' + queryStr);
+    if (Object.entries(newFilter).length) {
+      const queryStr = createQueryString(newFilter);
+      router.push(pathname + '?' + queryStr);
+    }
   }
 
-  const handleJobChange = (ev: ChangeEvent<HTMLSelectElement>) => {
-    const newJob = ev.currentTarget.value;
-    let query = '';
-
-    if (!jobs.includes(newJob)) {
-      console.log('Job not found');
-      query = createQueryString({ job: undefined });
-    }
-    else {
-      console.log(newJob);
-      query = createQueryString({ job: newJob });
-    }
-
-    router.push(pathname + '?' + query);
+  const handleSelectChange = (ev: ChangeEvent<HTMLSelectElement>) => {
+    const type = ev.currentTarget.name;
+    const value = ev.currentTarget.value;
+    changeFilter(type, value);
   }
 
   return (
     <div className={styles.filters}>
-      <button onClick={() => { handleFilterChange('date', 'today') }}>Today</button>
-      <button onClick={() => { handleFilterChange('date', 'week') }}>This Week</button>
-      <button onClick={() => { handleFilterChange('date', 'all_time') }}>All Time</button>
-      <select name="jobs" onChange={handleJobChange}>
+      <button onClick={() => { changeFilter('date', 'today') }}>Today</button>
+      <button onClick={() => { changeFilter('date', 'week') }}>This Week</button>
+      <button onClick={() => { changeFilter('date', 'all_time') }}>All Time</button>
+      <label htmlFor="jobs">Job:</label>
+      <select name="jobs" onChange={handleSelectChange}>
         <option value="ANY">ANY</option>;
         {jobs.map((job) => {
           return (
             <option key={job} value={job}>{job}</option>
           );
-        })};
+        })}
+      </select>
+      <label htmlFor="types">Type:</label>
+      <select name="types" onChange={handleSelectChange}>
+        <option value="ANY">ANY</option>;
+        {matchTypes.map((type) => {
+          return (
+            <option key={type} value={type}>{type}</option>
+          );
+        })}
       </select>
       <p>Order by</p>
-      <button onClick={() => { handleFilterChange('order', 'desc') }}>Recent</button>
-      <button onClick={() => { handleFilterChange('order', 'asc') }}>Oldest</button>
+      <button onClick={() => { changeFilter('order', 'desc') }}>Recent</button>
+      <button onClick={() => { changeFilter('order', 'asc') }}>Oldest</button>
     </div>
   )
 }
