@@ -52,12 +52,10 @@ const FilterBar = () => {
       const tuesOffset = (today.getDay() + 5) % 7; // Gets the offset in days from the previous tuesday
       const weekStart = new Date(today.getTime() - (tuesOffset * MS_IN_A_DAY));
       console.log(`weekStart: ${weekStart}`);
-      // weekStart.setUTCHours(8, 0, 0);
+      
       console.log(`weekStart: ${weekStart}`);
       const weekEnd = new Date(weekStart.getTime() + 6 * MS_IN_A_DAY);
-      // weekEnd.setUTCHours(8);
-      // weekEnd.setUTCMinutes(0);
-      // weekEnd.setUTCSeconds(0);
+      
       return { date: undefined, startDate: getDateString(weekStart), endDate: getDateString(weekEnd) };
     }
     else {

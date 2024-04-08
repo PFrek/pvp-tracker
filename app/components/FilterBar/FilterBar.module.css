@@ -11,3 +11,10 @@
   border-radius: 5px;
   color: var(--colorText);
 }
+
+
+@media (max-width: 1028px) {
+  .filters {
+    flex-direction: row;
+  }
+}
