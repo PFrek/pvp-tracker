@@ -1,7 +1,7 @@
 'use client';
 import { getMapsByType, IFilter, jobs, MatchType, matchTypes } from '@/app/lib/definitions';
 import styles from './FilterBar.module.css';
-import { ChangeEvent, useCallback, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 
@@ -11,6 +11,12 @@ const FilterBar = () => {
   const searchParams = useSearchParams();
 
   const [matchType, setMatchType] = useState<string>(searchParams.get('type') || 'ANY');
+  const [matchMap, setMatchMap] = useState<string>(searchParams.get('map') || 'ANY');
+
+  useEffect(() => {
+    setMatchType(searchParams.get('type') || 'ANY');
+    setMatchMap(searchParams.get('map') || 'ANY');
+  }, [searchParams]);
 
   const createQueryString = useCallback(
     (filters: IFilter) => {
@@ -88,6 +94,7 @@ const FilterBar = () => {
       }
       else {
         newFilter.type = value;
+        newFilter.map = undefined;
       }
     }
     else if(filter === 'maps') {
@@ -110,10 +117,6 @@ const FilterBar = () => {
     const filter = ev.currentTarget.name;
     const value = ev.currentTarget.value;
     changeFilter(filter, value);
-
-    if(filter === 'types') {
-      setMatchType(value);
-    }
   }
 
   return (
@@ -122,7 +125,7 @@ const FilterBar = () => {
       <button onClick={() => { changeFilter('date', 'week') }}>This Week</button>
       <button onClick={() => { changeFilter('date', 'all_time') }}>All Time</button>
       <label htmlFor="types">Type:</label>
-      <select name="types" onChange={handleSelectChange} defaultValue={matchType}>
+      <select name="types" onChange={handleSelectChange} value={matchType}>
         <option value="ANY">ANY</option>
         {matchTypes.map((type) => {
           return (
@@ -133,7 +136,7 @@ const FilterBar = () => {
       {matchType !== 'ANY' && (
         <>
         <label htmlFor="maps">Map:</label>
-        <select name="maps" onChange={handleSelectChange}>
+        <select name="maps" value={matchMap} onChange={handleSelectChange}>
           <option value="ANY">ANY</option>
           {getMapsByType(matchType as MatchType).map((map) => {
             return (
