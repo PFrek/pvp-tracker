@@ -1,7 +1,7 @@
 'use client';
-import { IFilter, jobs, matchTypes } from '@/app/lib/definitions';
+import { getMapsByType, IFilter, jobs, MatchType, matchTypes } from '@/app/lib/definitions';
 import styles from './FilterBar.module.css';
-import { ChangeEvent, useCallback } from 'react';
+import { ChangeEvent, useCallback, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 
@@ -9,6 +9,8 @@ const FilterBar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+
+  const [matchType, setMatchType] = useState<string>(searchParams.get('type') || 'ANY');
 
   const createQueryString = useCallback(
     (filters: IFilter) => {
@@ -63,16 +65,16 @@ const FilterBar = () => {
     }
   }
 
-  const changeFilter = (type: string, value: string): void => {
+  const changeFilter = (filter: string, value: string): void => {
     let newFilter: IFilter = {};
-    if (type === 'date') {
+    if (filter === 'date') {
       const dates = stringToFilter(value);
       newFilter = { ...newFilter, ...dates };
     }
-    else if (type === 'order') {
+    else if (filter === 'order') {
       newFilter.order = value;
     }
-    else if (type === 'jobs') {
+    else if (filter === 'jobs') {
       if (!jobs.includes(value)) {
         newFilter.job = undefined;
       }
@@ -80,13 +82,22 @@ const FilterBar = () => {
         newFilter.job = value;
       }
     }
-    else if(type === 'types') {
+    else if(filter === 'types') {
       if(!matchTypes.includes(value)) {
         newFilter.type = undefined;
       }
       else {
         newFilter.type = value;
       }
+    }
+    else if(filter === 'maps') {
+      if(!getMapsByType(matchType as MatchType).includes(value)) {
+        newFilter.map = undefined;
+      }
+      else {
+        newFilter.map = value;
+      }
+      console.log(newFilter.map);
     }
 
     if (Object.entries(newFilter).length) {
@@ -96,9 +107,13 @@ const FilterBar = () => {
   }
 
   const handleSelectChange = (ev: ChangeEvent<HTMLSelectElement>) => {
-    const type = ev.currentTarget.name;
+    const filter = ev.currentTarget.name;
     const value = ev.currentTarget.value;
-    changeFilter(type, value);
+    changeFilter(filter, value);
+
+    if(filter === 'types') {
+      setMatchType(value);
+    }
   }
 
   return (
@@ -106,21 +121,34 @@ const FilterBar = () => {
       <button onClick={() => { changeFilter('date', 'today') }}>Today</button>
       <button onClick={() => { changeFilter('date', 'week') }}>This Week</button>
       <button onClick={() => { changeFilter('date', 'all_time') }}>All Time</button>
+      <label htmlFor="types">Type:</label>
+      <select name="types" onChange={handleSelectChange} defaultValue={matchType}>
+        <option value="ANY">ANY</option>
+        {matchTypes.map((type) => {
+          return (
+            <option key={type} value={type}>{type} </option>
+          );
+        })}
+      </select>
+      {matchType !== 'ANY' && (
+        <>
+        <label htmlFor="maps">Map:</label>
+        <select name="maps" onChange={handleSelectChange}>
+          <option value="ANY">ANY</option>
+          {getMapsByType(matchType as MatchType).map((map) => {
+            return (
+              <option key={map} value={map}>{map}</option>
+            )
+          })}
+        </select>
+        </>
+      )}
       <label htmlFor="jobs">Job:</label>
       <select name="jobs" onChange={handleSelectChange}>
         <option value="ANY">ANY</option>;
         {jobs.map((job) => {
           return (
             <option key={job} value={job}>{job}</option>
-          );
-        })}
-      </select>
-      <label htmlFor="types">Type:</label>
-      <select name="types" onChange={handleSelectChange}>
-        <option value="ANY">ANY</option>;
-        {matchTypes.map((type) => {
-          return (
-            <option key={type} value={type}>{type}</option>
           );
         })}
       </select>

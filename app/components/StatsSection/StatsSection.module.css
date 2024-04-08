@@ -1,5 +1,5 @@
 .container {
-  flex: 1;
+  flex: 0.75;
   padding: 20px;
   display: flex;
   flex-wrap: wrap;
