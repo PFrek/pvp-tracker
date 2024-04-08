@@ -28,11 +28,22 @@ const FilterBar = () => {
   );
 
   const getDateString = (date: Date): string => {
-    return date.toISOString().split('T')[0];
+    const year = date.getFullYear();
+    let month = ((date.getMonth() + 1) < 10 ? '0' : '') + (date.getMonth() + 1);
+    const day = (date.getDate() < 10 ? '0' : '') + date.getDate();
+
+    const str = `${year}-${month}-${day}`;
+    console.log(str);
+
+    return str;
   }
 
   const stringToFilter = (str: string): IFilter => {
     const today = new Date();
+    if(today.getUTCHours() < 8) {
+      today.setUTCDate(today.getUTCDate() - 1);   
+    }
+    today.setUTCHours(8, 0, 0);
     const MS_IN_A_DAY = 24 * 60 * 60000;
     if (str === 'today') {
       return { date: getDateString(today), startDate: undefined, endDate: undefined };
@@ -40,13 +51,13 @@ const FilterBar = () => {
     else if (str === 'week') {
       const tuesOffset = (today.getDay() + 5) % 7; // Gets the offset in days from the previous tuesday
       const weekStart = new Date(today.getTime() - (tuesOffset * MS_IN_A_DAY));
-      weekStart.setUTCHours(8);
-      weekStart.setUTCMinutes(0);
-      weekStart.setUTCSeconds(0);
+      console.log(`weekStart: ${weekStart}`);
+      // weekStart.setUTCHours(8, 0, 0);
+      console.log(`weekStart: ${weekStart}`);
       const weekEnd = new Date(weekStart.getTime() + 6 * MS_IN_A_DAY);
-      weekEnd.setUTCHours(8);
-      weekEnd.setUTCMinutes(0);
-      weekEnd.setUTCSeconds(0);
+      // weekEnd.setUTCHours(8);
+      // weekEnd.setUTCMinutes(0);
+      // weekEnd.setUTCSeconds(0);
       return { date: undefined, startDate: getDateString(weekStart), endDate: getDateString(weekEnd) };
     }
     else {

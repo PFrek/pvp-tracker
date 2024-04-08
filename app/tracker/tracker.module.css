@@ -9,6 +9,7 @@
 .contentSection {
   display: flex;
   height: calc(100vh - 250px);
+  gap: 20px;
 }
 
 @media (max-width: 1028px) {

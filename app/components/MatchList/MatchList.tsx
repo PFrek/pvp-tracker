@@ -5,13 +5,6 @@ import APIRepository from '@/app/lib/IMatchRepository';
 import { IFilter } from '@/app/lib/definitions';
 
 const MatchList = async ({ filters }: { filters: IFilter }) => {
-  // const today = new Date();
-  // const year = today.getFullYear();
-  // const month = (today.getMonth() < 10 ? '0' : '') + today.getMonth();
-  // const day = (today.getDate() < 10 ? '0' : '') + today.getDate();
-
-  // const todayFilter = `${year}-${month}-${day}`;
-  // console.log(todayFilter);
 
   const matches = await APIRepository.getMatches(filters);
 
