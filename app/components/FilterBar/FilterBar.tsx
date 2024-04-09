@@ -1,8 +1,16 @@
 'use client';
 import { getMapsByType, IFilter, jobs, MatchType, matchTypes } from '@/app/lib/definitions';
 import styles from './FilterBar.module.css';
-import { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import { ChangeEvent, MouseEvent, useCallback, useEffect, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import FilterButtonGroup from './FilterButtonGroup/FilterButtonGroup';
+
+export interface IFilterButton {
+  type: string,
+  value: string,
+  text: string,
+  handler: (filter: string, value: string) => void,
+}
 
 
 const FilterBar = () => {
@@ -47,11 +55,9 @@ const FilterBar = () => {
   }
 
   const stringToFilter = (str: string): IFilter => {
-    const today = new Date();
-    if (today.getUTCHours() < 8) {
-      today.setUTCDate(today.getUTCDate() - 1);
-    }
-    today.setUTCHours(8, 0, 0);
+    let today = new Date();
+    today = new Date(today.getFullYear(), today.getMonth(), today.getDate()) 
+
     const MS_IN_A_DAY = 24 * 60 * 60000;
     if (str === 'today') {
       return { date: getDateString(today), startDate: undefined, endDate: undefined };
@@ -88,17 +94,17 @@ const FilterBar = () => {
         newFilter.job = value;
       }
     }
-    else if(filter === 'types') {
-      if(!matchTypes.includes(value)) {
+    else if (filter === 'types') {
+      if (!matchTypes.includes(value)) {
         newFilter.type = undefined;
       }
       else {
         newFilter.type = value;
-        newFilter.map = undefined;
       }
+      newFilter.map = undefined;
     }
-    else if(filter === 'maps') {
-      if(!getMapsByType(matchType as MatchType).includes(value)) {
+    else if (filter === 'maps') {
+      if (!getMapsByType(matchType as MatchType).includes(value)) {
         newFilter.map = undefined;
       }
       else {
@@ -113,6 +119,12 @@ const FilterBar = () => {
     }
   }
 
+  const handleButtonClick = (ev: MouseEvent<HTMLButtonElement>) => {
+    const button = ev.currentTarget;
+
+    // TODO: Will need to separa button components to track their active status.
+  }
+
   const handleSelectChange = (ev: ChangeEvent<HTMLSelectElement>) => {
     const filter = ev.currentTarget.name;
     const value = ev.currentTarget.value;
@@ -121,9 +133,18 @@ const FilterBar = () => {
 
   return (
     <div className={styles.filters}>
-      <button onClick={() => { changeFilter('date', 'today') }}>Today</button>
-      <button onClick={() => { changeFilter('date', 'week') }}>This Week</button>
-      <button onClick={() => { changeFilter('date', 'all_time') }}>All Time</button>
+      <FilterButtonGroup title='Date Filters' buttons={
+        [
+          { type: 'date', value: 'today', text: 'Today', handler: changeFilter},
+          { type: 'date', value: 'week', text: 'This Week', handler: changeFilter },
+          { type: 'date', value: 'all_time', text: 'All Time', handler: changeFilter },
+        ]
+      }>
+
+      </FilterButtonGroup>
+      {/* <button name='today' onClick={() => { changeFilter('date', 'today') }}>Today</button>
+      <button name='week' onClick={() => { changeFilter('date', 'week') }}>This Week</button>
+      <button name='all_time' onClick={() => { changeFilter('date', 'all_time') }}>All Time</button> */}
       <label htmlFor="types">Type:</label>
       <select name="types" onChange={handleSelectChange} value={matchType}>
         <option value="ANY">ANY</option>
@@ -135,15 +156,15 @@ const FilterBar = () => {
       </select>
       {matchType !== 'ANY' && (
         <>
-        <label htmlFor="maps">Map:</label>
-        <select name="maps" value={matchMap} onChange={handleSelectChange}>
-          <option value="ANY">ANY</option>
-          {getMapsByType(matchType as MatchType).map((map) => {
-            return (
-              <option key={map} value={map}>{map}</option>
-            )
-          })}
-        </select>
+          <label htmlFor="maps">Map:</label>
+          <select name="maps" value={matchMap} onChange={handleSelectChange}>
+            <option value="ANY">ANY</option>
+            {getMapsByType(matchType as MatchType).map((map) => {
+              return (
+                <option key={map} value={map}>{map}</option>
+              )
+            })}
+          </select>
         </>
       )}
       <label htmlFor="jobs">Job:</label>

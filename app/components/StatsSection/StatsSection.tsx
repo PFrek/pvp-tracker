@@ -69,6 +69,7 @@ const StatsSection = async ({ filters }: { filters: IFilter }) => {
       {
         matches && matches.length > 0 ? (
           <>
+            <StatCard title="Filtered Matches" value={matches.length.toString()}/>
             <StatCard title="Win Rate" value={`${calculateWinRate(matches)}%`} />
             <StatCard title="Avg KDA" value={`${calculateKDAStat('avg')}`} />
             <StatCard title="Best KDA" value={`${calculateKDAStat('best')}`} />
