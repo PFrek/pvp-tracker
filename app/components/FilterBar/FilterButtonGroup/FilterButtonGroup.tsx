@@ -19,6 +19,7 @@ const FilterButtonGroup = ({ title, buttons }: { title: string, buttons: IFilter
             key={button.value}
             filterType={button.type}
             filterValue={button.value}
+            filterText={button.text}
             handler={() => {
               setActiveButton(button.value);
               button.handler(button.type, button.value);

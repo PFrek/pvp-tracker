@@ -119,11 +119,6 @@ const FilterBar = () => {
     }
   }
 
-  const handleButtonClick = (ev: MouseEvent<HTMLButtonElement>) => {
-    const button = ev.currentTarget;
-
-    // TODO: Will need to separa button components to track their active status.
-  }
 
   const handleSelectChange = (ev: ChangeEvent<HTMLSelectElement>) => {
     const filter = ev.currentTarget.name;
@@ -139,12 +134,8 @@ const FilterBar = () => {
           { type: 'date', value: 'week', text: 'This Week', handler: changeFilter },
           { type: 'date', value: 'all_time', text: 'All Time', handler: changeFilter },
         ]
-      }>
+      }/>
 
-      </FilterButtonGroup>
-      {/* <button name='today' onClick={() => { changeFilter('date', 'today') }}>Today</button>
-      <button name='week' onClick={() => { changeFilter('date', 'week') }}>This Week</button>
-      <button name='all_time' onClick={() => { changeFilter('date', 'all_time') }}>All Time</button> */}
       <label htmlFor="types">Type:</label>
       <select name="types" onChange={handleSelectChange} value={matchType}>
         <option value="ANY">ANY</option>
@@ -176,9 +167,15 @@ const FilterBar = () => {
           );
         })}
       </select>
-      <p>Order by</p>
+      <FilterButtonGroup title='Order by' buttons={
+        [
+          { type: 'order', value: 'desc', text: 'Recent', handler: changeFilter},
+          { type: 'order', value: 'asc', text: 'Oldest', handler: changeFilter },
+        ]
+      }/>
+      {/* <p>Order by</p>
       <button onClick={() => { changeFilter('order', 'desc') }}>Recent</button>
-      <button onClick={() => { changeFilter('order', 'asc') }}>Oldest</button>
+      <button onClick={() => { changeFilter('order', 'asc') }}>Oldest</button> */}
     </div>
   )
 }
