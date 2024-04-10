@@ -1,0 +1,23 @@
+.groupTanks {
+  background-color: #404dff;
+}
+
+.groupTanks option {
+  background-color: #6e77ff;
+}
+
+.groupHealers {
+  background-color: #2d8637;
+}
+
+.groupHealers option {
+  background-color: #1db12f;
+}
+
+.groupDPS {
+  background-color: red;
+}
+
+.groupDPS option {
+  background-color: salmon;
+}

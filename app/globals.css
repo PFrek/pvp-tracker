@@ -6,25 +6,43 @@
   --matchDefeat: #7c2100;
   --matchVictory: #006912;
   --colorText: black;
-  --primary: #0088F0;
-  --primaryDark: #217EC5;
-  --secondary: #003CF0;
+  --primary: #0088f0;
+  --primaryDark: #217ec5;
+  --secondary: #003cf0;
   --secondaryDark: #385870;
-  --accent: #F09000;
+  --accent: #f09000;
 }
 
 body {
   padding: 1rem;
   background-color: var(--primary);
   color: var(--colorText);
+  display: flex;
+  justify-content: center;
 }
 
 input[type="number"] {
   -webkit-appearance: textfield;
-    -moz-appearance: textfield;
-      appearance: textfield;
+  -moz-appearance: textfield;
+  appearance: textfield;
 }
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
+}
+
+.largeSelect {
+  border: 1px solid var(--secondaryDark);
+  background-color: white;
+  padding: 10px 10px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.smallSelect {
+  border: 1px solid var(--secondaryDark);
+  background-color: white;
+  padding: 5px 5px;
+  border-radius: 5px;
+  text-align: center;
 }

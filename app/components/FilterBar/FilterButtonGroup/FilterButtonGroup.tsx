@@ -5,8 +5,8 @@ import FilterButton from '../FilterButton/FilterButton';
 import style from './FilterButtonGroup.module.css';
 import { useSearchParams } from 'next/navigation';
 
-const FilterButtonGroup = ({ title, buttons }: { title: string, buttons: IFilterButton[] }) => {
-  const [activeButton, setActiveButton] = useState<string>('')
+const FilterButtonGroup = ({ title, buttons, defaultActive }: { title: string, buttons: IFilterButton[], defaultActive: string }) => {
+  const [activeButton, setActiveButton] = useState<string>(defaultActive)
 
 
   return (

@@ -1,5 +1,6 @@
 .container {
-  background-color: var(--secondary);
+  background-color: var(--primaryDark);
+  border: 3px solid var(--secondary);
   display: flex;
   flex-direction: column;
   padding: 10px;
@@ -13,27 +14,12 @@
   gap: 50px;
 }
 
-.largeSelect {
-  border: 1px solid var(--secondaryDark);
-  background-color: var(--primary);
-  padding: 10px 10px;
-  border-radius: 10px;
-  text-align: center;
-}
-
-.smallSelect {
-  border: 1px solid var(--secondaryDark);
-  background-color: var(--primary);
-  padding: 5px 5px;
-  border-radius: 5px;
-  text-align: center;
-}
-
 .number {
-  background-color: var(--primary);
+  background-color: white;
   border: 1px solid var(--secondaryDark);
-  width: 2rem;
-  padding-right: 5px;
+  border-radius: 10px;
+  width: 3rem;
+  padding: 10px 10px;
   text-align: right;
 }
 
