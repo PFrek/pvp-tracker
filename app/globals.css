@@ -15,7 +15,7 @@
 
 body {
   padding: 1rem;
-  background-color: var(--primary);
+  background-color: black;
   color: var(--colorText);
   display: flex;
   justify-content: center;

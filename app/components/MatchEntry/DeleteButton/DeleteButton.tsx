@@ -19,7 +19,6 @@ const DeleteButton = ({ matchId }: { matchId: number }) => {
           <button className={styles.deleteButton} onClick={handleConfirmClick}>
             Yes
           </button>
-          {/* <button className={styles.cancelButton} onClick={() => setConfirming(false)}>No</button> */}
         </div>
       )}
       <button
