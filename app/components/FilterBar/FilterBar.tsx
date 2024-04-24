@@ -43,6 +43,7 @@ const FilterBar = () => {
   useEffect(() => {
     setMatchType(searchParams.get("type") || "ANY");
     setMatchMap(searchParams.get("map") || "ANY");
+
   }, [searchParams]);
 
   const createQueryString = useCallback(
@@ -73,7 +74,15 @@ const FilterBar = () => {
   };
 
   const stringToFilter = (str: string): IFilter => {
+    const RESET_TIME = new Date();
+    RESET_TIME.setUTCHours(8, 0, 0, 0);
+
     let today = new Date();
+
+    // Adjust date if current time is before reset time
+    if(today < RESET_TIME) {
+        today.setUTCDate(today.getUTCDate() - 1);
+    }
     today = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
     const MS_IN_A_DAY = 24 * 60 * 60000;

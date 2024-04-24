@@ -61,7 +61,6 @@ const StatsSection = async ({ filters }: { filters: IFilter }) => {
 
   return (
     <div className={styles.container}>
-      {matches && matches.length > 0 ? (
         <>
           <StatCard title="Matches" value={matches.length.toString()} />
           <StatCard
@@ -70,14 +69,11 @@ const StatsSection = async ({ filters }: { filters: IFilter }) => {
               .filter((match) => match.result === 1)
               .length.toString()}
           />
-          <StatCard title="Win Rate" value={`${calculateWinRate(matches)}%`} />
-          <StatCard title="Avg KDA" value={`${calculateKDAStat("avg")}`} />
-          <StatCard title="Best KDA" value={`${calculateKDAStat("best")}`} />
-          <StatCard title="Worst KDA" value={`${calculateKDAStat("worst")}`} />
+          <StatCard title="Win Rate" value={matches && matches.length > 0 ? `${calculateWinRate(matches)}%` : "-"} />
+          <StatCard title="Avg KDA" value={matches && matches.length > 0 ? `${calculateKDAStat("avg")}` : "-"} />
+          <StatCard title="Best KDA" value={matches && matches.length > 0 ? `${calculateKDAStat("best")}` : "-"} />
+          <StatCard title="Worst KDA" value={matches && matches.length > 0 ? `${calculateKDAStat("worst")}` : "-"} />
         </>
-      ) : (
-        <p>No data found.</p>
-      )}
     </div>
   );
 };
